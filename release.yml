@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Quick Release Script for OBS Media Source Manager
+# Usage: ./release.sh v1.0.0 "Release description"
+
+VERSION=$1
+DESCRIPTION=$2
+
+if [ -z "$VERSION" ]; then
+    echo "Error: Please provide a version number"
+    echo "Usage: ./release.sh v1.0.0 'Release description'"
+    exit 1
+fi
+
+if [ -z "$DESCRIPTION" ]; then
+    DESCRIPTION="Release $VERSION"
+fi
+
+echo "🚀 Creating release $VERSION..."
+
+# Add all changes
+git add .
+
+# Commit changes
+git commit -m "Release $VERSION"
+
+# Push changes
+git push origin main
+
+# Create and push tag
+git tag -a $VERSION -m "$DESCRIPTION"
+git push origin $VERSION
+
+echo "✅ Done! Check your GitHub repository for the release."
+echo "Note: If you set up GitHub Actions, the release will be created automatically."
+echo "Otherwise, go to GitHub and create the release manually from the tag."
